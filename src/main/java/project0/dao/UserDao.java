@@ -1,9 +1,11 @@
 package project0.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import project0.acctobjects.BankAcct;
 import project0.acctobjects.User;
@@ -103,11 +105,58 @@ public class UserDao {
 			statement.setBigDecimal(5, acctin.getAmount());
 			statement.setInt(6, acctin.getDefenseID());
 
-			statement.executeUpdate();
+			statement.executeUpdate(); 
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<BankAcct> fetchBankAccts(User user) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM bank_accounts WHERE userid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setInt(1, user.getUid());
+
+			ResultSet resultset = statement.executeQuery();
+			
+			return settoList(resultset);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static ArrayList<BankAcct> settoList(ResultSet resultset){
+		try {
+			ArrayList<BankAcct> accounts = new ArrayList<BankAcct>();
+			while(resultset.next()) {
+				accounts.add(extractBankAcct(resultset));
+			}
+			
+			return accounts;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public static BankAcct extractBankAcct(ResultSet resultSet) throws SQLException {	
+		int id = resultSet.getInt("userid");
+		int externalid = resultSet.getInt("externalid");
+		int jointid = resultSet.getInt("jointid");
+		int currencyid = resultSet.getInt("currencyid");
+		BigDecimal amount = resultSet.getBigDecimal("amount");
+		int defenseid = resultSet.getInt("defenseid");
+		
+		BankAcct account = new BankAcct(id,externalid,jointid, currencyid, amount, defenseid);
+		
+		return account;
+	}
+	
 }
 

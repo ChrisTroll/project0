@@ -98,7 +98,23 @@ public class BankAcct {
 
 	public BankAcct() {
 	}
+
+
+	public BankAcct(int idin, int externalidin, int jointidin, int currencyidin, BigDecimal amountin, int defenseidin) {
+		this.userID = idin;
+		this.externalID = externalidin;
+		this.jointID = jointidin;
+		this.currencyID = currencyidin;
+		this.amount = amountin;
+		this.defenseID = defenseidin;
+	}
 	
+	public String toString(){
+		return "Account: [Account Number = " + this.externalID + 
+					" Currency = " + this.currencyID +
+					" Amount = " + this.amount +
+					" Defense = " + this.defenseID + "]";
+	}
 
 
 }
