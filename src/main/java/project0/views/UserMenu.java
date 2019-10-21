@@ -16,13 +16,13 @@ public class UserMenu implements View{
 	}
 	
 	public void printMenu() {
-		System.out.println("Welcome " + this.user.getUsername() + "!");
+		System.out.println("----- Welcome " + this.user.getUsername() + "! -----");
 		System.out.println("What would you like to do today?");
 		System.out.println("Add funds: A");
 		System.out.println("Withdraw funds: W");
 		System.out.println("Transfer funds: T");
 		System.out.println("Open Account: O");
-		System.out.println("Create Join Account: J");
+		System.out.println("Create Joint Account: J");
 		System.out.println("Close Account: C");
 		System.out.println("Manage Account Defense Plan: D");
 		System.out.println("Return to Main Menu: R");
@@ -37,7 +37,7 @@ public class UserMenu implements View{
 			case 'A': return null;
 			case 'W': return null;
 			case 'T': return null;
-			case 'O': return null;
+			case 'O': return new OpenAcctView(user);
 			case 'J': return null;
 			case 'C': return null;
 			case 'D': return null;

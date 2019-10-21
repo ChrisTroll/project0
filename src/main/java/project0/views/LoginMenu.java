@@ -27,7 +27,7 @@ public class LoginMenu implements View{
 	//compare username and password to users in database, reroute as necessary
 	@Override
 	public View process() {
-		System.out.println("Login...");
+		System.out.println("----- Login -----");
 		userNameIn();
 		passwordIn();
 		

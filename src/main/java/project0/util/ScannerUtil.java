@@ -1,5 +1,6 @@
 package project0.util;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class ScannerUtil {
@@ -17,6 +18,22 @@ public class ScannerUtil {
 		Character input = null;
 		while(input == null) {
 			input = sc.next().charAt(0);
+		}
+		return input;
+	}
+	
+	public static int getIntIn() {
+		Integer input = null;
+		while(input == null) {
+			input = sc.nextInt();
+		}
+		return input;
+	}
+	
+	public static BigDecimal getBigDecimal() {
+		BigDecimal input = null;
+		while(input == null) {
+			input = sc.nextBigDecimal();
 		}
 		return input;
 	}

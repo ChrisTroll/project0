@@ -5,7 +5,7 @@ import project0.util.ScannerUtil;
 public class Landing implements View{
 	
 	public void printMenu() {
-		System.out.println("$$$$$ Main Menu $$$$$");
+		System.out.println("----- Main Menu -----");
 		System.out.println("Login: L");
 		System.out.println("Create user account: N");
 		System.out.println("Quit: Q");
