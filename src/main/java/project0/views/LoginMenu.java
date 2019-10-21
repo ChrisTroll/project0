@@ -1,7 +1,8 @@
 package project0.views;
 
+import project0.acctobjects.User;
+import project0.dao.UserDao;
 import project0.util.ScannerUtil;
-import project0.views.Landing;
 
 public class LoginMenu implements View{
 	private String username = "";
@@ -30,14 +31,14 @@ public class LoginMenu implements View{
 		userNameIn();
 		passwordIn();
 		
-		//if creds are valid
-			//move to UserMenu()
-		//else 
-			//return to Landing()
-		System.out.println("Invalid username/password combination.");
-		return null;
+		UserDao dao = new UserDao();
+		User user = dao.getUser(this.username, this.password);
+		if(user != null) {
+			UserMenu umenu = new UserMenu(user);
+			return umenu;
+		} else {
+			System.out.println("Invalid username/password combination.");
+			return new Landing();
+		}
 	}
-	
-	
-
 }

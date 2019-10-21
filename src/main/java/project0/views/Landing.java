@@ -16,7 +16,7 @@ public class Landing implements View{
 		char charin = ScannerUtil.getCharIn();
 		switch(charin) {
 			case 'L': return new LoginMenu();
-			case 'N': return new UserMenu();
+			case 'N': return new CreateUserView();
 			default: return null;
 		}
 			
