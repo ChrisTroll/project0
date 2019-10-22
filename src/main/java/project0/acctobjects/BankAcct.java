@@ -55,10 +55,39 @@ public class BankAcct {
 	}
 	
 	public String toString(){
+		
 		return "Account: [Account Number = " + this.externalID + 
-					" Currency = " + this.currencyID +
+					" Currency = " + this.currencytoString() +
 					" Amount = " + this.amount +
-					" Defense = " + this.defenseID + "]";
+					" Defense = " + this.defensetoString() + "]";
+	}
+	
+	private String currencytoString() {
+		switch(this.currencyID) {
+		case 1: return "USD";
+		case 2: return "EUR";
+		case 3: return "BPH";
+		case 4: return "WRH";
+		case 5: return "SLH";
+		default: return null;
+		}
+	}
+	
+	private String defensetoString() {
+		switch(this.defenseID) {
+		case 1: return "Wizards";
+		case 2: return "Hydras";
+		case 3: return "Dragons";
+		case 4: return "Pirates";
+		case 5: return "Ninjas";
+		case 6: return "Vikings";
+		default: return null;
+		}
+	}
+	
+	public void genJointID() {
+		UserDao dao = new UserDao();
+		this.jointID = dao.createNewJointID();
 	}
 
 	

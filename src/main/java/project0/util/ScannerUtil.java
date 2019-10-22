@@ -20,6 +20,7 @@ public class ScannerUtil {
 			input = sc.next().charAt(0);
 		}
 		return input;
+
 	}
 	
 	public static int getIntIn() {

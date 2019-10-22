@@ -20,10 +20,18 @@ public class BankAcctMenu implements View{
 
 	@Override
 	public View process() {
-		System.out.println("----- Account Management -----");
+
 		UserDao dao = new UserDao();
 		bankaccts = dao.fetchBankAccts(user);
 		this.activeindex = -1;
+		
+		if(bankaccts.size() == 0) {
+			System.out.println("No bank accounts for this user.");
+			System.out.println("Returning to User Menu...");
+			return new UserMenu(this.user);
+		}
+		
+		System.out.println("----- Account Management -----");
 		
 		//asks user to set active account index.
 		chooseAcct();

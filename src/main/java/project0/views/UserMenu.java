@@ -32,7 +32,7 @@ public class UserMenu implements View{
 		switch(charin) {
 
 			case 'O': return new OpenAcctView(user);
-			case 'J': return null;
+			case 'J': return new CreateJointView(user);
 			case 'M': return new BankAcctMenu(user);
 			case 'R': return new Landing();
 			default: return null;

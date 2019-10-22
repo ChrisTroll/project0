@@ -1,6 +1,7 @@
 package project0.views;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import project0.acctobjects.BankAcct;
 import project0.acctobjects.User;
@@ -10,9 +11,15 @@ import project0.util.ScannerUtil;
 public class OpenAcctView implements View{
 	private User acctowner;
 	private BankAcct bankacct;
+	private ArrayList<User> userlist;
 
 	public OpenAcctView(User user) {
 		this.acctowner = user;
+	}
+	
+	public OpenAcctView(ArrayList<User> userlistin, User userin) {
+		this.userlist = userlistin;
+		this.acctowner = userin;
 	}
 
 	@Override
@@ -21,7 +28,12 @@ public class OpenAcctView implements View{
 		
 		//gather information from the user
 		this.bankacct = new BankAcct();
-		this.bankacct.setUserID(acctowner.getUid());
+		if (this.userlist.size() == 0) {
+			this.bankacct.setUserID(acctowner.getUid());
+		} else {
+			this.bankacct.genJointID();
+			this.bankacct.setUserID(0);
+		}
 		this.bankacct.genExtID();
 		askCurrency();	
 		askDepositAmount();
@@ -29,7 +41,11 @@ public class OpenAcctView implements View{
 		
 		//ask if they want a joint account
 		UserDao dao = new UserDao();
-		dao.putBankAcct(this.bankacct);
+		if (this.userlist.size() == 0) {
+			dao.putBankAcct(this.bankacct);
+		} else {
+			dao.putJointAcct(this.userlist, this.bankacct);
+		}
 		
 		System.out.println("Account successfully added!");
 		

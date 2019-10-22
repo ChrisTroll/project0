@@ -114,10 +114,11 @@ public class UserDao {
 	
 	public ArrayList<BankAcct> fetchBankAccts(User user) {
 		try (Connection connection = ConnectionUtil.getConnection()) {
-			String sql = "SELECT * FROM bank_accounts WHERE userid = ?";
+			String sql = "SELECT * FROM bank_accounts WHERE userid = ? OR jointid IN (SELECT jointid FROM joint_map WHERE userid = ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
 			statement.setInt(1, user.getUid());
+			statement.setInt(2, user.getUid());
 
 			ResultSet resultset = statement.executeQuery();
 			
@@ -244,6 +245,63 @@ public class UserDao {
 			statement.setInt(2, account.getExternalID());
 
 			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int createNewJointID(){
+		String sql = "SELECT MAX(jointid) FROM joint_map";
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(sql);
+
+			ResultSet resultset = statement.executeQuery();
+			
+
+			resultset.next();
+			
+			//Look, i know its ugly but it works
+			try {
+				int maxint = Integer.parseInt(resultset.getObject(1).toString());
+				return maxint + 1;
+			} catch (NullPointerException e) {
+				return 1;
+			}
+			
+			
+		} catch (SQLException e){
+			e.printStackTrace();
+			return (Integer) null;
+		}
+	}
+	
+	public void putJointAcct(ArrayList<User> acctusers, BankAcct acctin) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			for(User user: acctusers) {
+				String sql = "INSERT INTO joint_map (userid, jointid) "
+						+ "values (?, ?)";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				
+				statement.setInt(1, user.getUid());
+				statement.setInt(2, acctin.getJointID());
+				
+				statement.executeUpdate(); 
+				
+			}
+			
+			String sql = "INSERT INTO bank_accounts (externalID, userID, jointID, currencyID, amount, defenseID) "
+											+ "values (?, ?, ?, ? , ?, ?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setInt(1, acctin.getExternalID());
+			statement.setInt(2, acctin.getUserID());
+			statement.setInt(3, acctin.getJointID());
+			statement.setInt(4, acctin.getCurrencyID());
+			statement.setBigDecimal(5, acctin.getAmount());
+			statement.setInt(6, acctin.getDefenseID());
+
+			statement.executeUpdate(); 
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
