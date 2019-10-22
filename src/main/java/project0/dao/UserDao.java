@@ -158,5 +158,97 @@ public class UserDao {
 		return account;
 	}
 	
+	public void deposit(BigDecimal amountin, BankAcct account) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE bank_accounts SET amount = amount + CAST(? AS MONEY) WHERE externalid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			String stramount = amountin.toString();
+			
+			statement.setString(1, stramount);
+			statement.setInt(2, account.getExternalID());
+
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void withdraw(BigDecimal amountin, BankAcct account) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE bank_accounts SET amount = amount - CAST(? AS MONEY) WHERE externalid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			String stramount = amountin.toString();
+			
+			statement.setString(1, stramount);
+			statement.setInt(2, account.getExternalID());
+
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void transfer(BigDecimal transferamount, BankAcct account, int transfertarget) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE bank_accounts SET amount = amount - CAST(? AS MONEY) WHERE externalid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+
+
+			String stramount = transferamount.toString();
+
+			statement.setString(1, stramount);
+			statement.setInt(2, account.getExternalID());
+
+			statement.executeUpdate();
+			
+			sql = "UPDATE bank_accounts SET amount = amount + CAST(? AS MONEY) WHERE externalid = ?";
+			statement = connection.prepareStatement(sql);
+			
+			statement.setString(1, stramount);
+			statement.setInt(2, transfertarget);
+
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void closeBankAcct(BankAcct account) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "DELETE FROM bank_accounts WHERE externalid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setInt(1, account.getExternalID());
+
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void setDefense(int defensein, BankAcct account) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE bank_accounts SET defenseID = ? WHERE externalid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setInt(1, defensein);
+			statement.setInt(2, account.getExternalID());
+
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
 

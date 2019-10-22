@@ -27,7 +27,6 @@ public class UserMenu implements View{
 	
 	@Override
 	public View process() {
-		// TODO Auto-generated method stub
 		printMenu();
 		char charin = ScannerUtil.getCharIn();
 		switch(charin) {

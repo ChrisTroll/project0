@@ -14,10 +14,18 @@ public class BankAcct {
 	private BigDecimal amount;
 	private int defenseID;
 
+	public BankAcct(int idin, int externalidin, int jointidin, int currencyidin, BigDecimal amountin, int defenseidin) {
+		this.userID = idin;
+		this.externalID = externalidin;
+		this.jointID = jointidin;
+		this.currencyID = currencyidin;
+		this.amount = amountin;
+		this.defenseID = defenseidin;
+	}
 	//returns an integer that has not been used as an external accountid
 	public void genExtID() {
 		Random rangen = new Random();
-		//generates a random integer between 1million and 999,999,999
+		//generates a random integer between 1,000,000 and 999,999,999
 		int genint;
 		UserDao dao = new UserDao();
 		
@@ -45,6 +53,14 @@ public class BankAcct {
 		}
 		defenseID = intin;
 	}
+	
+	public String toString(){
+		return "Account: [Account Number = " + this.externalID + 
+					" Currency = " + this.currencyID +
+					" Amount = " + this.amount +
+					" Defense = " + this.defenseID + "]";
+	}
+
 	
 	public int getExternalID() {
 		return externalID;
@@ -98,23 +114,5 @@ public class BankAcct {
 
 	public BankAcct() {
 	}
-
-
-	public BankAcct(int idin, int externalidin, int jointidin, int currencyidin, BigDecimal amountin, int defenseidin) {
-		this.userID = idin;
-		this.externalID = externalidin;
-		this.jointID = jointidin;
-		this.currencyID = currencyidin;
-		this.amount = amountin;
-		this.defenseID = defenseidin;
-	}
-	
-	public String toString(){
-		return "Account: [Account Number = " + this.externalID + 
-					" Currency = " + this.currencyID +
-					" Amount = " + this.amount +
-					" Defense = " + this.defenseID + "]";
-	}
-
 
 }
