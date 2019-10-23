@@ -35,6 +35,25 @@ public class UserDao {
 		}
 	}
 	
+	public boolean userExists(String unamein) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM users WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setString(1, unamein);
+			
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+	
 	//returns user object for a username and password combination
 	public User getUser(String unamein, String pwordin) {
 		try (Connection connection = ConnectionUtil.getConnection()) {
@@ -261,13 +280,25 @@ public class UserDao {
 
 			resultset.next();
 			
-			//Look, i know its ugly but it works
+			/*
+			 * A QUICK WORD ABOUT THIS TRY/CATCH BLOCK
+			 * the query above CAN return NULL if there are no joint accounts present
+			 * so, you can cast the resulting NULL into an integer
+			 * and force a NullPointerException
+			 * 
+			 * And no, you cannot add a placeholder record of 0, 0 in that table because it violated foreign key relationships
+			 * 
+			 * Look, i know its ugly but it works
+			 */
 			try {
 				int maxint = Integer.parseInt(resultset.getObject(1).toString());
 				return maxint + 1;
 			} catch (NullPointerException e) {
 				return 1;
 			}
+			
+			// I wish I could use this
+//			return resultset.getInt(1);
 			
 			
 		} catch (SQLException e){
@@ -305,6 +336,28 @@ public class UserDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public boolean isValidWithdrawl(BankAcct account, BigDecimal amount) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "SELECT amount FROM bank_accounts WHERE externalid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setInt(1, account.getExternalID());
+			
+			ResultSet resultset = statement.executeQuery();
+			
+			resultset.next();
+			
+			if (resultset.getBigDecimal(1).compareTo(amount) == 1) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

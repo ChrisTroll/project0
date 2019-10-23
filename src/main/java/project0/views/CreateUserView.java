@@ -30,8 +30,15 @@ public class CreateUserView implements View{
 		setPassword();
 		
 		UserDao dao = new UserDao();
-		dao.putUser(this.username, this.password);
-		return new Landing();
+		boolean userexists = dao.userExists(this.username);
+		if (!userexists) {
+			dao.putUser(this.username, this.password);
+			return new Landing();
+		} else {
+			System.out.println("Sorry, that username is taken.");
+			System.out.println("Returning to landing...");
+			return new Landing();
+		}
 	}
 	
 }

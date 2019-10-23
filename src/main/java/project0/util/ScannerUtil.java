@@ -12,6 +12,7 @@ public class ScannerUtil {
 			input = sc.nextLine();
 		}
 		return input;
+
 	}
 	
 	public static char getCharIn() {
@@ -24,19 +25,25 @@ public class ScannerUtil {
 	}
 	
 	public static int getIntIn() {
-		Integer input = null;
-		while(input == null) {
-			input = sc.nextInt();
-		}
-		return input;
+		int num = -1;
+		do {
+			while(!sc.hasNextInt()) {
+				sc.next();
+			}
+			num = sc.nextInt();
+		} while (num <= -1);
+		return num;
 	}
 	
 	public static BigDecimal getBigDecimal() {
-		BigDecimal input = null;
-		while(input == null) {
-			input = sc.nextBigDecimal();
-		}
-		return input;
+		BigDecimal num = null;
+		do {
+			while(!sc.hasNextBigDecimal()) {
+				sc.next();
+			}
+			num = sc.nextBigDecimal();
+		} while (num == null);
+		return num;
 	}
 	
 }

@@ -20,7 +20,7 @@ public class UserMenu implements View{
 		System.out.println("What would you like to do today?");
 		System.out.println("Open Account: O");
 		System.out.println("Create Joint Account: J");
-		System.out.println("Manage Accounts: M");
+		System.out.println("Manage/View Accounts: M");
 
 		System.out.println("Return to Main Menu: R");
 	}

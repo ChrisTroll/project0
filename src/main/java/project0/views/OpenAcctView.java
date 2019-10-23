@@ -12,7 +12,8 @@ public class OpenAcctView implements View{
 	private User acctowner;
 	private BankAcct bankacct;
 	private ArrayList<User> userlist;
-
+	private boolean isjoint = false;
+	
 	public OpenAcctView(User user) {
 		this.acctowner = user;
 	}
@@ -28,7 +29,7 @@ public class OpenAcctView implements View{
 		
 		//gather information from the user
 		this.bankacct = new BankAcct();
-		if (this.userlist.size() == 0) {
+		if (!isjoint) {
 			this.bankacct.setUserID(acctowner.getUid());
 		} else {
 			this.bankacct.genJointID();
@@ -41,7 +42,7 @@ public class OpenAcctView implements View{
 		
 		//ask if they want a joint account
 		UserDao dao = new UserDao();
-		if (this.userlist.size() == 0) {
+		if (!isjoint) {
 			dao.putBankAcct(this.bankacct);
 		} else {
 			dao.putJointAcct(this.userlist, this.bankacct);

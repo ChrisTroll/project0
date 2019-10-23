@@ -36,7 +36,7 @@ public class BankAcctMenu implements View{
 		//asks user to set active account index.
 		chooseAcct();
 		if (this.activeindex == -1) {
-			return new BankAcctMenu(this.user);
+			return new UserMenu(this.user);
 		}
 		
 		//asks user to choose account action
@@ -63,10 +63,12 @@ public class BankAcctMenu implements View{
 	
 	private void chooseAcct() {
 		System.out.println("What account would you like to manage?");
+		System.out.println("Press 0 to go back.");
+		
 		printAcctSelect();
 		
 		int acctchoice = ScannerUtil.getIntIn();
-		if (0 < acctchoice && acctchoice <= bankaccts.size()) {
+		if (0 <= acctchoice && acctchoice <= bankaccts.size()) {
 			this.activeindex = acctchoice -1;
 		} else {
 			System.out.println("Invalid account choice.");
@@ -92,6 +94,7 @@ public class BankAcctMenu implements View{
 		BigDecimal depositamount = ScannerUtil.getBigDecimal();
 		UserDao dao = new UserDao();
 		dao.deposit(depositamount, this.bankaccts.get(this.activeindex));
+		System.out.println("Deposit successful.");
 		return new BankAcctMenu(this.user);
 	}
 	
@@ -99,8 +102,15 @@ public class BankAcctMenu implements View{
 		System.out.println("How much would you like to withdraw?");
 		BigDecimal withdrawamount = ScannerUtil.getBigDecimal();
 		UserDao dao = new UserDao();
-		dao.withdraw(withdrawamount, this.bankaccts.get(this.activeindex));
-		return new BankAcctMenu(this.user);
+		if(dao.isValidWithdrawl(this.bankaccts.get(activeindex), withdrawamount)) {
+			dao.withdraw(withdrawamount, this.bankaccts.get(this.activeindex));
+			System.out.println("Withdrawl successful.");
+			return new BankAcctMenu(this.user);
+		} else {
+			System.out.println("Invalid withdrawl amount.");
+			System.out.println("Returning to User Menu...");
+			return new BankAcctMenu(this.user);
+		}
 	}
 	
 	private View transfer() {
@@ -112,9 +122,10 @@ public class BankAcctMenu implements View{
 		UserDao dao = new UserDao();
 		if(dao.acctNumExists(transfertarget)) {
 			dao.transfer(transferamount, this.bankaccts.get(this.activeindex), transfertarget);
+			System.out.println("Transfer successful.");
 		} else {
 			System.out.println("Sorry, that account isn't in our system. ");
-			System.out.println("SReturning to Account Management...");
+			System.out.println("Returning to Account Management...");
 		}
 		return new BankAcctMenu(this.user);
 	}
@@ -128,6 +139,7 @@ public class BankAcctMenu implements View{
 		if (choice == 'Y') {
 			UserDao dao = new UserDao();
 			dao.closeBankAcct(this.bankaccts.get(this.activeindex));
+			System.out.println("Account closed sucessfully.");
 		}
 		return new BankAcctMenu(this.user);
 	}
@@ -137,6 +149,7 @@ public class BankAcctMenu implements View{
 		activeacct.askDefense();
 		UserDao dao = new UserDao();
 		dao.setDefense(activeacct.getDefenseID(), activeacct);
+		System.out.println("Defense plan changed sucessfully.");
 		return new BankAcctMenu(this.user);
 	}
 }
