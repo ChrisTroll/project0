@@ -16,7 +16,7 @@ import project0.util.ConnectionUtil;
 public class UserDao {
 
 	public UserDao() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	//adds record to database of a new user
@@ -158,7 +158,6 @@ public class UserDao {
 			
 			return accounts;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

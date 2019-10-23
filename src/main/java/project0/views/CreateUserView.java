@@ -26,6 +26,8 @@ public class CreateUserView implements View{
 	//compare username and password to users in database, reroute as necessary
 	@Override
 	public View process(){
+		System.out.println("----- User Creation -----");
+		
 		setUsername();
 		setPassword();
 		

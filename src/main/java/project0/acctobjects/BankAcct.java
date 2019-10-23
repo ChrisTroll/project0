@@ -30,8 +30,8 @@ public class BankAcct {
 		UserDao dao = new UserDao();
 		
 		do {
-			genint = rangen.nextInt(998999999) + 1000000;
-		}while (dao.acctNumExists(genint));
+			genint = rangen.nextInt(999999999) + 1000000;
+		} while (dao.acctNumExists(genint));
 		
 		this.externalID = genint;
 		

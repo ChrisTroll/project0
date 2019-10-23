@@ -49,6 +49,7 @@ public class OpenAcctView implements View{
 		}
 		
 		System.out.println("Account successfully added!");
+		System.out.println("Your HAMMERS are now protected with HAMMERSPACE technology!");
 		
 		return new UserMenu(acctowner);
 	}

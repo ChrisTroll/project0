@@ -150,6 +150,7 @@ public class BankAcctMenu implements View{
 		UserDao dao = new UserDao();
 		dao.setDefense(activeacct.getDefenseID(), activeacct);
 		System.out.println("Defense plan changed sucessfully.");
+		System.out.println("Remember, Dragons offer the best security for your investment.");
 		return new BankAcctMenu(this.user);
 	}
 }

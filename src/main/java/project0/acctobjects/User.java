@@ -7,7 +7,6 @@ public class User {
 	private String password;
 	
 	public User(int idin, String userin, String passin) {
-		// TODO Auto-generated constructor stub
 		super();
 		this.uid = idin;
 		this.username = userin;
